@@ -1,0 +1,29 @@
+给我一杯可乐。
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+意图识别结果: drink_grab
+意图识别结果: {"intent_list":[{"intent":"task_drink","entities":{"drink_type":"cola"}}]}
+控制指令: {"function": ["ur_robot.task_drink()"], "response": "好的，马上为您提供可乐", "type": "cola"}
+总时长：0.86秒
+
+
+向左移动50毫米
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+意图识别结果: voice_control
+意图识别结果: {"intent_list":[{"intent":"move_direction","entities":{"direction":"左","distance":50,"unit":"毫米"}}]}
+控制指令: {"function": ["self.ur_robot.move_direction(50,0,0)"], "response": "好的，我朝着左方移动50毫米"}
+总时长：0.97秒
+
+
+对传感器进行码垛
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+意图识别结果: pallet
+意图识别结果: {"intent_list":[{"intent":"task_pallet","entities":{"pallet_row":null,"pallet_col":null,"row_offset":null,"col_offset":null}}]}
+控制指令: {"function": [], "response": "未获取到有效的码垛参数，请指定行数、列数或偏移距离"}
+总时长：1.12秒
+
+
+给我拿瓶芬达。
+意图识别结果: drink_grab
+意图识别结果: {"intent_list":[{"intent":"task_drink","entities":{"drink_type":"fenda"}}]}
+控制指令: {"function": ["ur_robot.task_drink()"], "response": "好的，马上为您提供芬达", "type": "fenda"}
+总时长：0.60秒

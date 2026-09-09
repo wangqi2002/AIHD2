@@ -5,10 +5,10 @@ import os
 import wave
 import pyaudio
 
-from Scripts.audio2action import audio2action
+from audio2action import RobotAgentSystem
 
 executor = ThreadPoolExecutor(2)
-a2a = audio2action()
+a2a = RobotAgentSystem()
 
 robot_bp = Blueprint('robot', __name__)
 
@@ -46,19 +46,13 @@ def text1():
     # print(request.files)
     file = request.files['audio']
 
-    with wave.open(f"/home/win/Project/P03/Audio/recording.wav", "wb") as sound_file:
+    with wave.open(f"audio/recording.wav", "wb") as sound_file:
         sound_file.setnchannels(1)
         sound_file.setsampwidth(2)
         sound_file.setframerate(44100)
         sound_file.writeframes(b''.join(file))
-    # sound_file = wave.open(f"/home/win/Project/P03/Audio/recording.wav", "wb")
-    # sound_file.setnchannels(1)
-    # sound_file.setsampwidth(16)
-    # sound_file.setframerate(44100)
-    # sound_file.writeframes(b''.join(file))
-    # sound_file.close()
-    audio_path = '/home/win/Project/P03/Audio/recording.wav'
-    output_name = '/home/win/Project/P03/Audio/recording1.wav'
+    audio_path = 'audio/recording.wav'
+    output_name = 'audio/recording1.wav'
     command = f'ffmpeg -i "{audio_path}" -ar 16000 -y "{output_name}"'
     os.system(command)
 
@@ -70,15 +64,24 @@ def text1():
 def reply():
     comment = request.values.get("question")
     print(comment)
-    answer = a2a.action(comment)
+    answer = a2a.chat(comment)
     print(answer)
-    if "好的，马上为您提供" in answer["response"]:
-        value = answer['response'] +" "+answer['type']
+
+    # 解析code字段的json字符串
+    code_dict = json.loads(answer["code"])
+
+    if 'drink_grab' in answer['router']:
+        value = code_dict["response"]
         # executor.submit(ur_robot_fun, answer_json)
         return value
-    # elif "请稍等，我正在为您准备" in answer:
-    #     return "这里是机器人提供的答复"
-    else :
-        value = answer['response']
+    elif 'pallet' in answer['router']:
+        value = code_dict["response"]
         return value
-
+    elif 'voice_control' in answer['router']:
+        value = code_dict["response"]
+        return value
+    else:
+        # intent也是json字符串，如果需要返回可读文本，建议解析
+        intent_data = json.loads(answer["intent"])
+        value = intent_data
+        return value

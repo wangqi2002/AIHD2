@@ -260,10 +260,8 @@ class RobotAgentSystem:
                 print("无法识别意图，请重新输入")
 
     # 对接语音识别文本
-    def chat(self, audio_path):
-        # 用户文本输入
-        user_input = self.audio_to_text(audio_path)
-        
+    def chat(self, user_input):
+
         router_type = self.router_query(user_input)
         print("意图识别结果:", router_type)
 
@@ -287,6 +285,9 @@ class RobotAgentSystem:
 
         else:
             print("无法识别意图，请重新输入")
+            return {"router":router_type,"intent": "无法识别意图，请重新输入"}
+
+        return {"router":router_type,"intent": control_intent, "code": control_code}
 
              
 def main():

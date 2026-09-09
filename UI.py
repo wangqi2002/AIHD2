@@ -54,18 +54,19 @@ class UI():
         stream.close()
         audio.terminate()
 
-        sound_file = wave.open(f"/home/win/Project/P05/audio/recording.wav", "wb")
+        sound_file = wave.open(f"audio/recording.wav", "wb")
         sound_file.setnchannels(1)
         sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
         sound_file.setframerate(44100)
         sound_file.writeframes(b''.join(frames))
         sound_file.close()
         start_time = time.time()
-        audio_path = '/home/win/Project/P05/audio/recording.wav'
-        output_name = '/home/win/Project/P05/audio/recording1.wav'
+        audio_path = 'audio/recording.wav'
+        output_name = 'audio/recording1.wav'
         command = f'ffmpeg -i "{audio_path}" -ar 16000 -y "{output_name}"'
         os.system(command)
-        self.robot.chat(output_name)
+        user_input = self.robot.audio_to_text(output_name)
+        self.robot.chat(user_input)
         end_time = time.time()
         print(f"总时长：{end_time - start_time:.2f}秒")
 
